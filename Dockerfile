@@ -1,6 +1,8 @@
 FROM gradle:7.3.1-jdk11 AS build
-COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
+COPY gradle build.gradle.kts gradlew settings.gradle.kts ./
+RUN gradle build --no-daemon || true
+COPY src src
 RUN gradle build --no-daemon
 
 FROM openjdk:11-jre-slim
